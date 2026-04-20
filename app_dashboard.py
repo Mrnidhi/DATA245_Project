@@ -215,6 +215,59 @@ with tab_predict:
 
         st.info(f"**{choice['label']}**: {choice['blurb']}")
 
+    st.markdown("---")
+    st.subheader("🎛️ Try your own farm inputs")
+    st.caption("Adjust the most influential variables. Other features are held at training-set medians.")
+
+    with st.form("manual_form"):
+        c1, c2 = st.columns(2)
+        with c1:
+            temperature = st.slider("Temperature (°C)", 10.0, 40.0, 25.0, step=0.5)
+            rainfall = st.slider("Rainfall (mm)", 0.0, 350.0, 150.0, step=5.0)
+            ndvi = st.slider("NDVI (vegetation index)", 0.0, 1.0, 0.6, step=0.01)
+            oc = st.slider("Soil organic carbon (%)", 0.1, 3.0, 1.0, step=0.05)
+        with c2:
+            irrigation = st.slider("Irrigation frequency (per season)", 0, 15, 5)
+            crop_type = st.selectbox("Crop type", ["Wheat", "Rice", "Maize", "Soybean"])
+            fert_type = st.selectbox("Fertilizer", ["Chemical", "Organic", "Mixed"])
+            pesticide = st.selectbox("Pesticide usage", ["Low", "Medium", "High"])
+
+        submitted = st.form_submit_button("Predict", type="primary", use_container_width=True)
+
+    if submitted:
+        manual_row = _build_manual_row(
+            stats, template,
+            temperature=temperature, rainfall=rainfall, ndvi=ndvi, oc=oc,
+            irrigation=irrigation, crop_type=crop_type,
+            fert_type=fert_type, pesticide=pesticide,
+        )
+        X_manual = pd.DataFrame([manual_row]).reindex(columns=template_cols, fill_value=0)
+        pred = float(final_model.predict(X_manual)[0])
+
+        if pred >= 8.0:
+            mood = "🤩 Excellent yield"
+        elif pred >= 5.5:
+            mood = "🙂 Decent yield"
+        elif pred >= 3.0:
+            mood = "😐 Below average"
+        else:
+            mood = "😟 Stressed crop"
+
+        st.metric(f"{mood}", f"{pred:.2f} t/ha")
+
+        summary = pd.DataFrame([{
+            "Crop": crop_type,
+            "Temperature (°C)": temperature,
+            "Rainfall (mm)": rainfall,
+            "NDVI": ndvi,
+            "OC (%)": oc,
+            "Irrigation": irrigation,
+            "Fertilizer": fert_type,
+            "Pesticide": pesticide,
+        }])
+        st.dataframe(summary, use_container_width=True, hide_index=True)
+
+
 # Diagnostics tab -----------------------------------------------------------
 with tab_diag:
     st.subheader("📊 How well does the tuned model work?")
