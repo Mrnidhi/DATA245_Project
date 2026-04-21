@@ -26,6 +26,112 @@ st.set_page_config(
 )
 
 
+# Cartoon styling --------------------------------------------------------------
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(180deg, #fef9c3 0%, #fefce8 30%, #ffffff 60%);
+    }
+    h1 {
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        color: #166534;
+        text-shadow: 2px 2px 0px #fde68a;
+    }
+    h2, h3 {
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        color: #15803d;
+    }
+    .stButton > button {
+        border-radius: 18px;
+        border: 3px solid #fcd34d;
+        background: linear-gradient(135deg, #fef9c3 0%, #fde68a 100%);
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        padding: 12px 14px;
+        color: #92400e;
+        box-shadow: 0 4px 0 #d97706;
+        transition: all 0.1s;
+    }
+    .stButton > button:hover {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #d97706;
+        background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+    }
+    .stButton > button[kind="primary"] {
+        border: 3px solid #16a34a;
+        background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+        color: #14532d;
+        box-shadow: 0 4px 0 #15803d;
+    }
+    .stButton > button[kind="primary"]:hover {
+        background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+        box-shadow: 0 2px 0 #15803d;
+    }
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        padding: 16px;
+        border-radius: 18px;
+        border: 3px dashed #10b981;
+        box-shadow: 3px 3px 0 #6ee7b7;
+    }
+    [data-testid="stMetricLabel"] {
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        color: #14532d;
+        font-weight: 700;
+    }
+    [data-testid="stMetricValue"] {
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        color: #166534;
+    }
+    .farm-banner {
+        background: linear-gradient(135deg, #bae6fd 0%, #fef9c3 60%, #fde68a 100%);
+        border-radius: 24px;
+        border: 4px solid #fcd34d;
+        padding: 18px;
+        text-align: center;
+        font-size: 44px;
+        margin-bottom: 14px;
+        box-shadow: 4px 4px 0 #fbbf24;
+        line-height: 1.1;
+    }
+    .farm-banner small {
+        display: block;
+        font-size: 16px;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        color: #166534;
+        margin-top: 6px;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background: #fef3c7;
+        border-radius: 14px 14px 0 0;
+        border: 2px solid #fcd34d;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        font-weight: 700;
+        padding: 10px 18px;
+        color: #92400e;
+    }
+    .stTabs [aria-selected="true"] {
+        background: #bbf7d0 !important;
+        color: #14532d !important;
+        border-color: #16a34a !important;
+    }
+    div[data-testid="stForm"] {
+        background: #fff7ed;
+        border-radius: 18px;
+        border: 3px dashed #fb923c;
+        padding: 14px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 @st.cache_resource
 def load_artifacts():
     with open(MODEL_DIR / "metadata.json") as f:
